@@ -6,6 +6,7 @@ rm -rf tmp && mkdir tmp
 
 echo 'building the server'
 cd server
+go get
 go build
 cd ..
 mv server/server tmp
@@ -13,6 +14,7 @@ cp server/service tmp
 
 echo 'building the client'
 cd client
+go get
 go build
 cd ..
 mv client/client tmp
@@ -40,7 +42,9 @@ echo 'packaging the client'
 tar zcf client_$(uname -m).tar.gz client VERSION *.md
 
 cd ..
-cp tmp/server_$(uname -m).tar.gz tmp/client_$(uname -m).tar.gz stathub
-rm -rf tmp
+#cp tmp/server_$(uname -m).tar.gz tmp/client_$(uname -m).tar.gz stathub
+#rm -rf tmp
 
+cp tmp/server_$(uname -m).tar.gz /opt/stathub
+cp tmp/client_$(uname -m).tar.gz /opt/stathub
 echo '+ building stathub done'
