@@ -1424,6 +1424,16 @@ pre code {
     width: 1170px;
   }
 }
+@media (min-width: 1400px) {
+  .container {
+    width: 1370px;
+  }
+}
+@media (min-width: 1600px) {
+  .container {
+    width: 1570px;
+  }
+}
 @media (min-width: 1900px) {
   .container {
     width: 1670px;
