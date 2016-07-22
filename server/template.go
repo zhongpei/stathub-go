@@ -6273,7 +6273,7 @@ code {
 <html lang="en">
     <head>
     <meta charset="utf-8">
-    <title>Stat Hub - A smart Hub for holding server stat</title>
+    <title>服务器状态</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="/static/bootstrap.css" type="text/css" rel="stylesheet">
     <style type="text/css">.progress {margin-bottom: 0;}</style>
@@ -6281,9 +6281,9 @@ code {
 <body>
 <div class="container">
     <div class="header clearfix">
-        <h3 class="pull-left"><a href="/">Stat Hub</a></h3>
+        <h3 class="pull-left"><a href="/">服务器状态</a></h3>
         <span id="auth-span" class="pull-right">
-            <a href="/help">Help</a> <a href="/passwd">Passwd</a> <a href="/logout">Logout</a>
+            <a href="/help">帮助</a> <a href="/passwd">修改密码</a> <a href="/logout">登出</a>
         </span>
     </div>
     <div>
@@ -6374,7 +6374,7 @@ code {
     </tbody>
 </table>
 <div id="auto_reload">
-    Stat will refresh after <span id="after_seconds">00</span> seconds, <a style="cursor:pointer" id="after_action" onclick="after_action()">stop</a>.
+    状态将在 <span id="after_seconds">00</span> 秒后刷新, <a style="cursor:pointer" id="after_action" onclick="after_action()">stop</a>.
 </div>
 <script type="text/javascript">
 var c = 0;
@@ -6422,23 +6422,16 @@ function stat_hub_version_result(update) {
 c = do_start();
 var ver = '0.13.2';
 var v = getCookie('chkver');
-if (v === false) {
-    var u = document.createElement('script');
-    u.src = '//www.likexian.com/dream/stathub/chkver/' + ver + '.js';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(u, s);
-} else {
-    stat_hub_version_result(v);
-}
+
 </script>
 {{end}}`
     Template_Login = `{{define "main_body"}}
 <form class="form-group" role="form" method="POST" action="/{{.action}}">
     <div class="form-group input-group input-group-lg">
-    <span class="input-group-addon">Password</span>
+    <span class="input-group-addon">密码</span>
         <input type="password" class="form-control" id="password" name="password" />
     </div>
-    <button type="submit" class="btn btn-default btn-lg btn-block">Submit</button>
+    <button type="submit" class="btn btn-default btn-lg btn-block">提交</button>
 </form>
 {{end}}`
     Template_Help = `{{define "main_body"}}

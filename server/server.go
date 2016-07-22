@@ -565,7 +565,7 @@ func main() {
 		time_stamp := fmt.Sprintf("%d", SERVER_START)
 		id := PassWord(fmt.Sprintf("%s", os.Getpid()), time_stamp)
 		key := PassWord(id, time_stamp)
-		password := PassWord(key, "likexian")
+		password := PassWord(key, "admin")
 		istls := true
 		WriteConfig(id, key, password, istls)
 	}
