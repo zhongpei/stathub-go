@@ -77,7 +77,7 @@
     </tbody>
 </table>
 <div id="auto_reload">
-    Stat will refresh after <span id="after_seconds">00</span> seconds, <a style="cursor:pointer" id="after_action" onclick="after_action()">stop</a>.
+    状态将在 <span id="after_seconds">00</span> 秒后刷新, <a style="cursor:pointer" id="after_action" onclick="after_action()">stop</a>.
 </div>
 <script type="text/javascript">
 var c = 0;
@@ -125,13 +125,6 @@ function stat_hub_version_result(update) {
 c = do_start();
 var ver = '0.13.2';
 var v = getCookie('chkver');
-if (v === false) {
-    var u = document.createElement('script');
-    u.src = '//www.likexian.com/dream/stathub/chkver/' + ver + '.js';
-    var s = document.getElementsByTagName('script')[0];
-    s.parentNode.insertBefore(u, s);
-} else {
-    stat_hub_version_result(v);
-}
+
 </script>
 {{end}}
