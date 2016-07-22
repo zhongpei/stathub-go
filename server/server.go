@@ -25,7 +25,7 @@ import (
 const (
 	DEBUG        = false
 	DATA_DIR     = "/data"
-	CONFIG_FILE  = "/server.json"
+	CONFIG_FILE  = "/config/server.json"
 	CLIENT_FILE  = "/client"
 	PROCESS_USER = "nobody"
 	PROCESS_LOCK = "/stathub.pid"
