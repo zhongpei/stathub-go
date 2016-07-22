@@ -1,7 +1,7 @@
 #!/bin/bash
 
 VERSION="0.13.2"
-STATHUB_URL="https://github.com/likexian/stathub-go/releases/download/v${VERSION}/client_$(uname -m).tar.gz"
+STATHUB_URL="https://{{.server}}/download/client_$(uname -m).tar.gz"
 
 [ $(id -u) -ne 0 ] && sudo="sudo" || sudo=""
 $sudo mkdir -p /var/stathub
