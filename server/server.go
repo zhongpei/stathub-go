@@ -54,24 +54,26 @@ type Config struct {
 }
 
 type Status struct {
-	Id         string
-	IP         string
-	Name       string
-	Status     string
-	Uptime     string
-	Load       string
-	NetRead    string
-	NetWrite   string
-	DiskRead   string
-	DiskWrite  string
-	DiskWarn   string
-	CPURate    float64
-	MemRate    float64
-	SwapRate   float64
-	DiskRate   float64
-	NetTotal   string
-	OSRelease  string
-	LastUpdate string
+	Id          string
+	IP          string
+	Name        string
+	Status      string
+	Uptime      string
+	Load        string
+	NetReadWan  string
+	NetWriteWan string
+	NetRead     string
+	NetWrite    string
+	DiskRead    string
+	DiskWrite   string
+	DiskWarn    string
+	CPURate     float64
+	MemRate     float64
+	SwapRate    float64
+	DiskRate    float64
+	NetTotal    string
+	OSRelease   string
+	LastUpdate  string
 }
 
 type Statuses []Status
@@ -152,6 +154,14 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 				net_read, _ := d.Get("net_read").Float64()
 				net_write, _ := d.Get("net_write").Float64()
+				net_read_wan, _ := d.Get("net_read_wan").Float64()
+				net_write_wan, _ := d.Get("net_write_wan").Float64()
+
+				net_read = net_read * 8
+				net_write = net_write * 8
+				net_read_wan = net_read_wan * 8
+				net_write_wan = net_write_wan * 8
+
 				disk_read, _ := d.Get("disk_read").Float64()
 				disk_write, _ := d.Get("disk_write").Float64()
 				net_total, _ := d.Get("net_total").Float64()
@@ -163,6 +173,8 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 
 				s.NetRead = HumanByte(net_read)
 				s.NetWrite = HumanByte(net_write)
+				s.NetReadWan = HumanByte(net_read_wan)
+				s.NetWriteWan = HumanByte(net_write_wan)
 				s.DiskRead = HumanByte(disk_read)
 				s.DiskWrite = HumanByte(disk_write)
 				s.NetTotal = HumanByte(net_total)
@@ -416,6 +428,8 @@ func APIStatHandler(w http.ResponseWriter, r *http.Request) {
 		o_disk_write, _ := current.Get("disk_write").Float64()
 		o_net_read, _ := current.Get("net_read").Float64()
 		o_net_write, _ := current.Get("net_write").Float64()
+		o_net_read_wan, _ := current.Get("net_read_wan").Float64()
+		o_net_write_wan, _ := current.Get("net_write_wan").Float64()
 		o_net_total, _ := current.Get("net_total").Float64()
 
 		n_time_stamp, _ := data.Get("time_stamp").Int()
@@ -423,6 +437,8 @@ func APIStatHandler(w http.ResponseWriter, r *http.Request) {
 		n_disk_write, _ := data.Get("disk_write").Float64()
 		n_net_read, _ := data.Get("net_read").Float64()
 		n_net_write, _ := data.Get("net_write").Float64()
+		n_net_read_wan, _ := data.Get("net_read_wan").Float64()
+		n_net_write_wan, _ := data.Get("net_write_wan").Float64()
 
 		status_set, _ := current.Map()
 		diff_seconds := float64(n_time_stamp - o_time_stamp)
@@ -432,8 +448,12 @@ func APIStatHandler(w http.ResponseWriter, r *http.Request) {
 
 		status_set["disk_read"] = (n_disk_read - o_disk_read) / diff_seconds
 		status_set["disk_write"] = (n_disk_write - o_disk_write) / diff_seconds
+
 		status_set["net_read"] = (n_net_read - o_net_read) / diff_seconds
 		status_set["net_write"] = (n_net_write - o_net_write) / diff_seconds
+
+		status_set["net_read_wan"] = (n_net_read_wan - o_net_read_wan) / diff_seconds
+		status_set["net_write_wan"] = (n_net_write_wan - o_net_write_wan) / diff_seconds
 
 		o_net := o_net_read + o_net_write
 		n_net := n_net_read + n_net_write

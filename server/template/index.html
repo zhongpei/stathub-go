@@ -12,9 +12,10 @@
             <th>RAM</th>
             <th>Swap</th>
             <th>Disk</th>
-            <th>Net I/O</th>
-            <th>Disk R/W</th>
-            <th>Bandwidth</th>
+            <th>Wan Net I/O(bits)</th>
+            <th>Net I/O(bits)</th>
+            <th>Disk R/W(bytes)</th>
+            <th>Bandwidth(bytes)</th>
             <th>System</th>
             <th>Updated</th>
         </tr>
@@ -62,6 +63,9 @@
                       </div>
                     </div>
                     {{end}}
+                </td>
+                <td align="center">
+                    {{.NetReadWan}}/{{.NetWriteWan}}
                 </td>
                 <td align="center">
                     {{.NetRead}}/{{.NetWrite}}

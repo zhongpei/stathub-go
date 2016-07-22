@@ -6309,9 +6309,10 @@ code {
             <th>RAM</th>
             <th>Swap</th>
             <th>Disk</th>
-            <th>Net I/O</th>
-            <th>Disk R/W</th>
-            <th>Bandwidth</th>
+            <th>Wan Net I/O(bits)</th>
+            <th>Net I/O(bits)</th>
+            <th>Disk R/W(bytes)</th>
+            <th>Bandwidth(bytes)</th>
             <th>System</th>
             <th>Updated</th>
         </tr>
@@ -6319,7 +6320,7 @@ code {
     <tbody>
         {{if not .}}
             <tr>
-                <td colspan="12" align="center">No data yet, please add nodes following the <a href="/help">guide</a>.</td>
+                <td colspan="12" align="center">没有数据，请按照 <a href="/help">帮助</a>添加节点</td>
             </tr>
         {{end}}
         {{range .}}
@@ -6361,6 +6362,9 @@ code {
                     {{end}}
                 </td>
                 <td align="center">
+                    {{.NetReadWan}}/{{.NetWriteWan}}
+                </td>
+                <td align="center">
                     {{.NetRead}}/{{.NetWrite}}
                 </td>
                 <td align="center">
@@ -6374,7 +6378,7 @@ code {
     </tbody>
 </table>
 <div id="auto_reload">
-    状态将在 <span id="after_seconds">00</span> 秒后刷新, <a style="cursor:pointer" id="after_action" onclick="after_action()">stop</a>.
+    状态将在 <span id="after_seconds">00</span> 秒后刷新, <a style="cursor:pointer" id="after_action" onclick="after_action()">暂停</a>.
 </div>
 <script type="text/javascript">
 var c = 0;
