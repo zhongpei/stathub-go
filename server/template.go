@@ -6290,16 +6290,14 @@ code {
         {{template "main_body" .}}
     </div>
     <div class="footer text-center">
-        &copy; 2015-2016 <a href="https://www.likexian.com/">Li Kexian</a>, Apache License, Version 2.0.
+        &copy; 2015-2016 
     </div>
 </body>
 </html>
 `
     Template_Index = `{{define "main_body"}}
 <script type="text/javascript">document.getElementById('auth-span').style.display='block';</script>
-<div id="update" class="bg-warning">
-    New version available, Please download from <a target="_blank" href="https://github.com/likexian/stathub-go">https://github.com/likexian/stathub-go</a>.
-</div>
+
 <table class="table table-striped">
     <thead>
         <tr>
@@ -6460,7 +6458,7 @@ if (v === false) {
     Template_Node = `#!/bin/bash
 
 VERSION="0.13.2"
-STATHUB_URL="https://github.com/likexian/stathub-go/releases/download/v${VERSION}/client_$(uname -m).tar.gz"
+STATHUB_URL="https://{{.server}}/download/client_$(uname -m).tar.gz"
 
 [ $(id -u) -ne 0 ] && sudo="sudo" || sudo=""
 $sudo mkdir -p /var/stathub
