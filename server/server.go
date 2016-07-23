@@ -39,7 +39,7 @@ var (
 	CONFIG_KEY      = ""
 	CONFIG_PASSWORD = ""
 	CONFIG_ISTLS    = false
-	CONFIG_PORT     = 443
+	CONFIG_PORT     = 15944
 )
 
 var (

@@ -17,6 +17,7 @@ if [ ! -d /var/stathub ]; then
 fi
 cd /var/stathub
 cp /opt/stathub/*.gz /var/stathub
+
 command_exists() {
     type "$1" &> /dev/null
 }
