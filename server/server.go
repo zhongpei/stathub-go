@@ -39,6 +39,7 @@ var (
 	CONFIG_KEY      = ""
 	CONFIG_PASSWORD = ""
 	CONFIG_ISTLS    = false
+	CONFIG_PORT     = 443
 )
 
 var (
@@ -51,6 +52,7 @@ type Config struct {
 	Key      string `json:"key"`
 	PassWord string `json:"password"`
 	IsTLS    bool   `json:"istls"`
+	Port     int    `json:"port"`
 }
 
 type Status struct {
@@ -281,7 +283,7 @@ func PasswdHandler(w http.ResponseWriter, r *http.Request) {
 			http.Redirect(w, r, "/passwd", http.StatusFound)
 		} else {
 			CONFIG_PASSWORD = PassWord(CONFIG_KEY, password)
-			WriteConfig(CONFIG_ID, CONFIG_KEY, CONFIG_PASSWORD, CONFIG_ISTLS)
+			WriteConfig(CONFIG_ID, CONFIG_KEY, CONFIG_PASSWORD, CONFIG_ISTLS, CONFIG_PORT)
 			http.Redirect(w, r, "/", http.StatusFound)
 		}
 	} else {
@@ -508,12 +510,13 @@ func DonwloadClient32Handler(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, SERVER_WORKDIR+CLIENT_FILE+"_i686.tar.gz")
 }
 
-func WriteConfig(id, key, password string, istls bool) {
+func WriteConfig(id, key, password string, istls bool, port int) {
 	config := Config{}
 	config.Id = id
 	config.Key = key
 	config.PassWord = password
 	config.IsTLS = istls
+	config.Port = port
 
 	data := simplejson.Json{}
 	data.Data = config
@@ -587,7 +590,8 @@ func main() {
 		key := PassWord(id, time_stamp)
 		password := PassWord(key, "admin")
 		istls := true
-		WriteConfig(id, key, password, istls)
+
+		WriteConfig(id, key, password, istls, CONFIG_PORT)
 	}
 
 	cert_dir := strings.Split(TLS_CERT, "/")[1]
@@ -635,6 +639,8 @@ func main() {
 	CONFIG_KEY, _ = config.Get("key").String()
 	CONFIG_PASSWORD, _ = config.Get("password").String()
 	CONFIG_ISTLS, _ = config.Get("istls").Bool()
+	CONFIG_PORT, _ = config.Get("port").Int()
+	LISTEN_ADDRESS := fmt.Sprintf(":%d", CONFIG_PORT)
 
 	http.HandleFunc("/", IndexHandler)
 	http.HandleFunc("/login", LoginHandler)
@@ -651,12 +657,12 @@ func main() {
 	http.HandleFunc("/download/client_i686.tar.gz", DonwloadClient32Handler)
 
 	if CONFIG_ISTLS {
-		err = http.ListenAndServeTLS(":15944", SERVER_WORKDIR+TLS_CERT, SERVER_WORKDIR+TLS_KEY, nil)
+		err = http.ListenAndServeTLS(LISTEN_ADDRESS, SERVER_WORKDIR+TLS_CERT, SERVER_WORKDIR+TLS_KEY, nil)
 		if err != nil {
 			panic(err)
 		}
 	} else {
-		err = http.ListenAndServe(":15944", nil)
+		err = http.ListenAndServe(LISTEN_ADDRESS, nil)
 		if err != nil {
 			panic(err)
 		}

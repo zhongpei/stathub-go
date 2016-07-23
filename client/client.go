@@ -29,6 +29,7 @@ const (
 var (
 	CLIENT_WORKDIR = ""
 	CLIENT_START   = int64(0)
+	CLIENT_WAN     = "em1"
 )
 
 type Config struct {
@@ -36,6 +37,7 @@ type Config struct {
 	Name   string `json:"name"`
 	Server string `json:"server"`
 	Key    string `json:"key"`
+	Wan    string `json:"wan"`
 }
 
 type Stat struct {
@@ -103,7 +105,7 @@ start:
 	server, _ := config.Get("server").String()
 	key, _ := config.Get("key").String()
 
-	stat := GetStat(id, name, CLIENT_START)
+	stat := GetStat(config, id, name, CLIENT_START)
 	surl := server + "/api/stat"
 	skey := PassWord(key, stat)
 
@@ -124,11 +126,11 @@ start:
 		// auto select http or https
 		if strings.Contains(err.Error(), "malformed HTTP response") {
 			server = "https://" + strings.Split(server, "://")[1]
-			WriteConfig(id, name, server, key)
+			WriteConfig(id, name, server, key, CLIENT_WAN)
 			goto start
 		} else if strings.Contains(err.Error(), "oversized record received with length") {
 			server = "http://" + strings.Split(server, "://")[1]
-			WriteConfig(id, name, server, key)
+			WriteConfig(id, name, server, key, CLIENT_WAN)
 			goto start
 		} else {
 			fmt.Println(err)
@@ -172,22 +174,24 @@ func SettingConfig(time_stamp int64) {
 	random := fmt.Sprintf("%s%s", os.Getpid(), time_stamp)
 	id := PassWord(key, random)
 
-	WriteConfig(id, name, server, key)
+	WriteConfig(id, name, server, key, CLIENT_WAN)
 }
 
-func WriteConfig(id, name, server, key string) {
+func WriteConfig(id, name, server, key, wan string) {
 	config := Config{}
 	config.Id = id
 	config.Name = name
 	config.Server = server
 	config.Key = key
+	config.Wan = wan
 
 	data := simplejson.Json{}
 	data.Data = config
 	simplejson.Dump(CLIENT_WORKDIR+CONFIG_FILE, &data)
 }
 
-func GetStat(id string, name string, time_stamp int64) string {
+func GetStat(config *simplejson.Json, id string, name string, time_stamp int64) string {
+	Wan, _ := config.Get("wan").String()
 	stat := Stat{}
 	stat.Id = id
 	stat.TimeStamp = time_stamp
@@ -243,7 +247,7 @@ func GetStat(id string, name string, time_stamp int64) string {
 			net_write += v.TXBytes
 			net_read += v.RXBytes
 		}
-		if v.Device == "em1" {
+		if v.Device == Wan {
 			stat.NetReadWan = v.RXBytes
 			stat.NetWriteWan = v.TXBytes
 		}
