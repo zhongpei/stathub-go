@@ -6516,7 +6516,8 @@ cat <<EOF > client.json
     "id": "{{.id}}",
     "name": "",
     "server": "https://{{.server}}",
-    "key": "{{.key}}"
+    "key": "{{.key}}",
+	"wan": "em1"
 }
 EOF
 fi
